@@ -3,11 +3,16 @@
 const keepassClient = {};
 keepassClient.keySize = 24;
 keepassClient.messageTimeout = 500; // Milliseconds
-keepassClient.nativeHostName = 'org.keepassxc.keepassxc_browser';
+keepassClient.nativeHostName = 'io.github.steeb_k.cipher_bridge';
 keepassClient.nativePort = null;
 keepassClient.webSocket = null;
 
-const WEBSOCKET_PORT = 7580;
+// Deliberately not KeePassXC's 7580. Cipher serves no WebSocket transport, so
+// leaving the original port would mean that selecting the WebSocket connection
+// method here connects straight to a running KeePassXC instead -- silently
+// talking to a different password manager. A port nothing listens on fails
+// visibly instead.
+const WEBSOCKET_PORT = 7581;
 
 const kpErrors = {
     UNKNOWN_ERROR: 0,

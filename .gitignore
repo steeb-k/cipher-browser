@@ -11,3 +11,7 @@
 .xz
 node_modules
 test-results
+
+# Saved working manifest from tools/stage-manifest.py. Upstream's build.js only
+# creates this transiently while packaging; our staging tool leaves it in place.
+manifest_default.json

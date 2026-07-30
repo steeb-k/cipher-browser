@@ -1,6 +1,6 @@
 {
     "manifest_version": 2,
-    "name": "KeePassXC-Browser",
+    "name": "Cipher Bridge",
     "version": "1.10.3",
     "description": "__MSG_extensionDescription__",
     "author": "KeePassXC Team",
@@ -99,29 +99,29 @@
         "fill_username_password": {
             "description": "__MSG_contextMenuFillUsernameAndPassword__",
             "suggested_key": {
-                "default": "Alt+Shift+U",
-                "mac": "MacCtrl+Shift+U"
+                "default": "Alt+Shift+C",
+                "mac": "MacCtrl+Shift+C"
             }
         },
         "fill_password": {
             "description": "__MSG_contextMenuFillPassword__",
             "suggested_key": {
-                "default": "Alt+Shift+I",
-                "mac": "MacCtrl+Shift+I"
+                "default": "Alt+Shift+V",
+                "mac": "MacCtrl+Shift+V"
             }
         },
         "fill_totp": {
             "description": "__MSG_contextMenuFillTOTP__",
             "suggested_key": {
-                "default": "Alt+Shift+O",
-                "mac": "MacCtrl+Shift+O"
+                "default": "Alt+Shift+B",
+                "mac": "MacCtrl+Shift+B"
             }
         },
         "show_password_generator": {
             "description": "__MSG_contextMenuShowPasswordGenerator__",
             "suggested_key": {
-                "default": "Alt+Shift+G",
-                "mac": "MacCtrl+Shift+G"
+                "default": "Alt+Shift+N",
+                "mac": "MacCtrl+Shift+N"
             }
         },
         "save_credentials": {
@@ -188,7 +188,7 @@
     ],
     "applications": {
         "gecko": {
-            "id": "keepassxc-browser@keepassxc.org",
+            "id": "cipher-bridge@steeb-k.github.io",
             "strict_min_version": "100.0"
         }
     },

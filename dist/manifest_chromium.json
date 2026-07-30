@@ -1,6 +1,6 @@
 {
     "manifest_version": 3,
-    "name": "KeePassXC-Browser",
+    "name": "Cipher Bridge",
     "version": "1.10.3",
     "version_name": "1.10.3",
     "minimum_chrome_version": "124",
@@ -85,29 +85,29 @@
         "fill_username_password": {
             "description": "__MSG_contextMenuFillUsernameAndPassword__",
             "suggested_key": {
-                "default": "Alt+Shift+U",
-                "mac": "MacCtrl+Shift+U"
+                "default": "Alt+Shift+C",
+                "mac": "MacCtrl+Shift+C"
             }
         },
         "fill_password": {
             "description": "__MSG_contextMenuFillPassword__",
             "suggested_key": {
-                "default": "Alt+Shift+P",
-                "mac": "MacCtrl+Shift+P"
+                "default": "Alt+Shift+V",
+                "mac": "MacCtrl+Shift+V"
             }
         },
         "fill_totp": {
             "description": "__MSG_contextMenuFillTOTP__",
             "suggested_key": {
-                "default": "Alt+Shift+O",
-                "mac": "MacCtrl+Shift+O"
+                "default": "Alt+Shift+B",
+                "mac": "MacCtrl+Shift+B"
             }
         },
         "show_password_generator": {
             "description": "__MSG_contextMenuShowPasswordGenerator__",
             "suggested_key": {
-                "default": "Alt+Shift+G",
-                "mac": "MacCtrl+Shift+G"
+                "default": "Alt+Shift+N",
+                "mac": "MacCtrl+Shift+N"
             }
         },
         "save_credentials": {

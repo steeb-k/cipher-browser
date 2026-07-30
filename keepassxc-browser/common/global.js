@@ -1,6 +1,6 @@
 'use strict';
 
-const EXTENSION_NAME = 'KeePassXC-Browser';
+const EXTENSION_NAME = 'Cipher Bridge';
 const DEFINED_CUSTOM_FIELDS = 'defined-custom-fields';
 
 // Site Preferences ignore options
