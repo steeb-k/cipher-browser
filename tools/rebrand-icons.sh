@@ -14,13 +14,24 @@
 
 set -euo pipefail
 
-ICONS="$(dirname "$0")/../keepassxc-browser/icons"
+REPO="$(cd "$(dirname "$0")/.." && pwd)"
+ICONS="$REPO/keepassxc-browser/icons"
+UPSTREAM_REF="${UPSTREAM_REF:-upstream/develop}"
 
-# KeePassXC brand green -> Cipher violet.
-LIGHT_FROM="#63ab3a"; LIGHT_TO="#9a7ce0"
-DARK_FROM="#226e23";  DARK_TO="#5b3fa8"
+# KeePassXC brand green -> Cipher pink, sampled from the application icon:
+# #ff67ef is its dominant colour, and the darker tone is the same hue at about
+# 60% luminance, to keep the gradients readable.
+LIGHT_FROM="#63ab3a"; LIGHT_TO="#ff67ef"
+DARK_FROM="#226e23";  DARK_TO="#993e8f"
 
 command -v rsvg-convert >/dev/null || { echo "rsvg-convert is required" >&2; exit 1; }
+
+# Reset to pristine upstream artwork before substituting. Without this the
+# script is a no-op on a second run and after any colour change: the greens it
+# looks for were already replaced, so nothing matches and the icons silently
+# keep whatever colour they had.
+echo "Restoring upstream icons from $UPSTREAM_REF"
+git -C "$REPO" checkout "$UPSTREAM_REF" -- keepassxc-browser/icons
 
 recolour() {
     sed -i "s/${LIGHT_FROM}/${LIGHT_TO}/gI; s/${DARK_FROM}/${DARK_TO}/gI" "$1"
