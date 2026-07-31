@@ -1,8 +1,13 @@
 {
     "manifest_version": 2,
     "name": "Cipher Bridge",
-    "version": "1.10.3",
+    "version": "0.9.2",
     "description": "__MSG_extensionDescription__",
+    "browser_specific_settings": {
+        "gecko": {
+            "id": "cipher-bridge@steeb-k.github.io"
+        }
+    },
     "author": "KeePassXC Team",
     "icons": {
         "16": "icons/keepassxc.svg",
@@ -118,7 +123,7 @@
             }
         },
         "show_password_generator": {
-            "description": "__MSG_contextMenuShowPasswordGenerator__",
+            "description": "__MSG_contextMenuGeneratePassword__",
             "suggested_key": {
                 "default": "Alt+Shift+N",
                 "mac": "MacCtrl+Shift+N"

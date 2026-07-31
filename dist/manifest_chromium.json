@@ -1,8 +1,8 @@
 {
     "manifest_version": 3,
     "name": "Cipher Bridge",
-    "version": "1.10.3",
-    "version_name": "1.10.3",
+    "version": "0.9.2",
+    "version_name": "0.9.2",
     "minimum_chrome_version": "124",
     "description": "__MSG_extensionDescription__",
     "author": "KeePassXC Team",
@@ -104,7 +104,7 @@
             }
         },
         "show_password_generator": {
-            "description": "__MSG_contextMenuShowPasswordGenerator__",
+            "description": "__MSG_contextMenuGeneratePassword__",
             "suggested_key": {
                 "default": "Alt+Shift+N",
                 "mac": "MacCtrl+Shift+N"

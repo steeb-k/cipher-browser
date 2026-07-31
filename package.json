@@ -1,7 +1,7 @@
 {
-  "name": "keepassxc-browser",
-  "version": "1.10.3",
-  "description": "KeePassXC-Browser",
+  "name": "cipher-bridge",
+  "version": "0.9.2",
+  "description": "Cipher Bridge, a fork of KeePassXC-Browser that talks to Cipher",
   "main": "build.js",
   "devDependencies": {
     "@eslint/js": "^9.39.1",

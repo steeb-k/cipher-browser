@@ -3,6 +3,22 @@
 const EXTENSION_NAME = 'Cipher Bridge';
 const DEFINED_CUSTOM_FIELDS = 'defined-custom-fields';
 
+// Toolbar icon colours, matching the icon-color enum in Cipher's settings
+// schema and the directories under icons/toolbar. 'monochrome' has no directory
+// of its own: it resolves to dark or light depending on the browser's colour
+// scheme, in browserAction.generateIconName.
+const ICON_COLORS = [
+    'pink',
+    'blue',
+    'green',
+    'yellow',
+    'orange',
+    'red',
+    'purple',
+    'brown',
+    'monochrome',
+];
+
 // Site Preferences ignore options
 const IGNORE_NOTHING = 'ignoreNothing';
 const IGNORE_NORMAL = 'ignoreNormal';

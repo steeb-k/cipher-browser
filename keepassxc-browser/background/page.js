@@ -28,6 +28,10 @@ const defaultSettings = {
     defaultPasswordManager: false,
     defaultGroupAlwaysAsk: false,
     downloadFaviconAfterSave: false,
+    // Chosen in Cipher, not here: the application sends it in the handshake and
+    // pushes an icon-color signal when it changes. Stored so the toolbar icon is
+    // right from the moment the browser starts, before any connection exists.
+    iconColor: 'pink',
     passkeys: false,
     passkeysFallback: true,
     redirectAllowance: 3,

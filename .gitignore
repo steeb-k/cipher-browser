@@ -6,6 +6,7 @@
 
 *.zip
 *.crx
+*.xpi
 .bz
 .bz2
 .xz
@@ -15,3 +16,7 @@ test-results
 # Saved working manifest from tools/stage-manifest.py. Upstream's build.js only
 # creates this transiently while packaging; our staging tool leaves it in place.
 manifest_default.json
+
+# web-ext's record of the last signing upload: an upload id and a hash of the
+# xpi it came from. A per-machine build cache, not something to share.
+.amo-upload-uuid

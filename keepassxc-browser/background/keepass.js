@@ -45,7 +45,10 @@ const kpActions = {
     GET_TOTP: 'get-totp',
     REQUEST_AUTOTYPE: 'request-autotype',
     PASSKEYS_REGISTER: 'passkeys-register',
-    PASSKEYS_GET: 'passkeys-get'
+    PASSKEYS_GET: 'passkeys-get',
+    // Cipher's own, not part of the protocol upstream: an unsolicited signal
+    // sent when the icon colour is changed in the application's settings.
+    ICON_COLOR: 'icon-color'
 };
 
 browser.storage.local.get({ 'latestKeePassXC': { 'version': '', 'lastChecked': null }, 'keyRing': {} }).then((item) => {
@@ -440,6 +443,13 @@ keepass.changePublicKeys = async function(tab, enableTimeout = false, connection
         }
 
         keepass.isKeePassXCAvailable = true;
+
+        // Absent when talking to anything but Cipher, which leaves the stored
+        // colour alone rather than resetting it.
+        if (response.iconColor) {
+            await keepass.setIconColor(response.iconColor);
+        }
+
         console.log(`${EXTENSION_NAME}: Server public key: ${nacl.util.encodeBase64(keepass.serverPublicKey)}`);
         return true;
     } catch (err) {
@@ -969,8 +979,30 @@ keepass.handleError = function(tab, errorCode, errorMessage = '') {
     tabs.updateTabValues(tab?.id, { errorMessage: errorMessage });
 };
 
+// Store the colour Cipher has chosen and repaint the toolbar icon.
+//
+// Persisted rather than kept in memory because the icon has to be right at
+// browser startup, before anything has connected. Called from two places: the
+// handshake, which carries the current value on every connection, and the
+// icon-color signal, which covers a change made while already connected.
+keepass.setIconColor = async function(color) {
+    if (!page?.settings || !ICON_COLORS.includes(color) || page.settings.iconColor === color) {
+        return;
+    }
+
+    page.settings.iconColor = color;
+    await browser.storage.local.set({ 'settings': page.settings });
+    keepass.updatePopup();
+};
+
+// tabList is a Map, so it has a size and not a length. Reading .length gave
+// undefined, and `undefined > 0` is false, so this never repainted anything:
+// every caller that is not driven by a tab event -- the icon-color signal and
+// the database-locked/unlocked signals both go through here -- silently did
+// nothing, and the toolbar icon only caught up when a tab event happened to
+// call browserAction.showDefault() by another route.
 keepass.updatePopup = function() {
-    if (page && tabs.tabList.length > 0) {
+    if (page && tabs.tabList.size > 0) {
         browserAction.showDefault();
     }
 };

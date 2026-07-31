@@ -5,7 +5,11 @@ const contextMenuItems = [
     { title: tr('contextMenuFillPassword'), action: 'fill_password' },
     { title: tr('contextMenuFillTOTP'), action: 'fill_totp' },
     { title: tr('contextMenuFillAttribute'), id: 'fill_attribute', visible: false },
-    { title: tr('contextMenuShowPasswordGenerator'), action: 'show_password_generator' },
+    // Restricted to password fields. The others are fine on any editable
+    // element, but this one writes a generated password straight into whatever
+    // has focus -- on a plain text field that is silently wrong, and with
+    // nothing fillable focused it did nothing at all and looked broken.
+    { title: tr('contextMenuGeneratePassword'), action: 'show_password_generator', contexts: [ 'password' ] },
     { title: tr('contextMenuSaveCredentials'), action: 'save_credentials' },
     { title: tr('contextMenuRequestGlobalAutoType'), action: 'request_autotype' }
 ];
@@ -98,10 +102,23 @@ const initContextMenuItems = async function() {
     // Create context menu items
     await browser.contextMenus.removeAll();
     for (const item of contextMenuItems) {
+        let contexts = item.contexts || page.menuContexts;
+
+        // 'password' is a Firefox-only context type. Chromium rejects the whole
+        // create() call rather than ignoring the unknown value, so an item
+        // asking for it there would simply never appear. Drop it and settle for
+        // any editable field.
+        if (!page.isFirefox) {
+            contexts = contexts.filter(context => context !== 'password');
+            if (contexts.length === 0) {
+                contexts = page.menuContexts;
+            }
+        }
+
         try {
             await browser.contextMenus.create({
                 title: item.title,
-                contexts: page.menuContexts,
+                contexts: contexts,
                 visible: item.visible,
                 id: item.id || item.action
             });

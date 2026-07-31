@@ -425,6 +425,13 @@ keepassClient.onNativeMessage = function(response) {
         return;
     }
 
+    // Cipher pushes this when the colour is changed in its settings, so the
+    // toolbar icon follows without waiting for the next connection.
+    if (response.action === kpActions.ICON_COLOR) {
+        keepass.setIconColor(response.value);
+        return;
+    }
+
     // Generic response handling
     keepassClient.handleNativeMessage(response);
 };

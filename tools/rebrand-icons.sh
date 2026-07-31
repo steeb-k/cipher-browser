@@ -30,46 +30,45 @@ command -v rsvg-convert >/dev/null || { echo "rsvg-convert is required" >&2; exi
 # script is a no-op on a second run and after any colour change: the greens it
 # looks for were already replaced, so nothing matches and the icons silently
 # keep whatever colour they had.
-echo "Restoring upstream icons from $UPSTREAM_REF"
-git -C "$REPO" checkout "$UPSTREAM_REF" -- keepassxc-browser/icons
+#
+# Restricted to the in-page icons this script owns. Restoring the whole icons
+# directory would also revert the application icon and the entire toolbar set,
+# which tools/generate-icons.py draws from scratch -- running this script would
+# silently throw that artwork away.
+# locked.svg and disconnected.svg are deliberately absent: they are drawn from
+# scratch by tools/generate-icons.py, because they carry the KeePassXC logo
+# without using the brand green, so recolouring alone left them unchanged.
+IN_PAGE=(
+    custom_login_fields.svg
+    help.svg
+    key.svg
+    otp.svg
+)
+
+echo "Restoring in-page icons from $UPSTREAM_REF"
+for name in "${IN_PAGE[@]}"; do
+    git -C "$REPO" checkout "$UPSTREAM_REF" -- "keepassxc-browser/icons/$name"
+done
 
 recolour() {
     sed -i "s/${LIGHT_FROM}/${LIGHT_TO}/gI; s/${DARK_FROM}/${DARK_TO}/gI" "$1"
 }
 
 echo "Recolouring SVGs"
-# Every SVG in the icon root plus the coloured toolbar set. Substitution is a
-# no-op on files that do not use the brand colours, so this needs no allowlist
-# and will pick up any icon upstream adds later.
-for svg in "$ICONS"/*.svg "$ICONS"/toolbar/colored/*.svg; do
+# In-page icons only. The application icon and the whole toolbar set are
+# generated from scratch by tools/generate-icons.py and must not be touched
+# here: both scripts would otherwise rewrite the same files and the result
+# would depend on which ran last.
+for svg in "$ICONS"/*.svg; do
     [ -f "$svg" ] || continue
+    case "$(basename "$svg")" in
+        keepassxc.svg) continue ;;
+    esac
     recolour "$svg"
     echo "  ${svg#"$ICONS"/}"
-done
-
-echo "Rasterising application icons"
-for png in "$ICONS"/keepassxc_*.png; do
-    # Size lives in the filename, e.g. keepassxc_32x32.png
-    name="$(basename "$png")"
-    size="${name#keepassxc_}"; size="${size%.png}"
-    w="${size%x*}"; h="${size#*x}"
-    rsvg-convert -w "$w" -h "$h" "$ICONS/keepassxc.svg" -o "$png"
-    echo "  $name (${w}x${h})"
-done
-
-echo "Rasterising coloured toolbar icons"
-for svg in "$ICONS"/toolbar/colored/*.svg; do
-    png="${svg%.svg}.png"
-    [ -f "$png" ] || continue
-    # Match whatever size the existing PNG used. Command substitution rather
-    # than `read`, which returns non-zero on unterminated output and would
-    # abort the script under `set -e`.
-    size="$(identify -format "%wx%h" "$png")"
-    w="${size%x*}"; h="${size#*x}"
-    rsvg-convert -w "$w" -h "$h" "$svg" -o "$png"
-    echo "  $(basename "$png") (${w}x${h})"
 done
 
 echo
 echo "Done. Filenames are intentionally unchanged so that no reference in the"
 echo "code or manifests can be missed; rename them during the UI rework."
+echo "For the application and toolbar icons, run tools/generate-icons.py."

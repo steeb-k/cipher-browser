@@ -77,13 +77,21 @@ browserAction.generateIconName = async function(iconType) {
     name += (await keepass.keePassXCUpdateAvailable()) ? 'new_' : '';
     name += (!iconType || iconType === 'normal') ? 'normal' : iconType;
 
-    let style = 'colored';
-    if (page?.settings?.useMonochromeToolbarIcon) {
-        if (page.settings.colorTheme === 'system') {
-            style = await retrieveColorScheme();
-        } else {
-            style = page.settings.colorTheme;
-        }
+    // The colour comes from Cipher rather than from this extension's options,
+    // so the toolbar icon and the tray icon agree. 'colored' remains the
+    // fallback for an installation that has never heard from the application.
+    const iconColor = page?.settings?.iconColor;
+    let style = ICON_COLORS.includes(iconColor) ? iconColor : 'colored';
+
+    // Monochrome is the one choice this extension can serve better than the
+    // tray can: a panel gets a fixed pixmap, but here the browser's own colour
+    // scheme is readable, so the icon can follow it instead of committing to
+    // one shade. useMonochromeToolbarIcon stays honoured as an override for
+    // anyone who set it before the colour was Cipher's to choose.
+    if (style === 'monochrome' || page?.settings?.useMonochromeToolbarIcon) {
+        style = page?.settings?.colorTheme === 'system' || !page?.settings?.colorTheme
+            ? await retrieveColorScheme()
+            : page.settings.colorTheme;
     }
     const filetype = (page.isFirefox || page.isSafari) ? 'svg' : 'png';
     return `/icons/toolbar/${style}/${name}.${filetype}`;
