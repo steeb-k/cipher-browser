@@ -6,6 +6,21 @@ than the upstream releases they descend from. Upstream's own history is kept
 under the heading further down, unchanged.
 
 
+0.9.3 (2026-07-31)
+=========================
+- Give the Monochrome toolbar icon a visible locked state. It was generated with
+  the same colour for locked and unlocked, on the reasoning that a single-colour
+  theme has nothing to switch to, which made the two icons byte-identical: the
+  extension was switching to the locked icon correctly and the locked icon
+  simply looked the same. Monochrome now takes the same grey locked state as
+  every other theme, which is a mid tone and so reads against the white icon on
+  a dark toolbar and the near-black one on a light toolbar
+- Refuse to generate an icon set where a locked safe would look exactly like an
+  open one. The fault above was invisible in the output -- every file present
+  and well-formed -- so the only symptom was a toolbar icon that appeared to
+  ignore the safe entirely
+
+
 0.9.2 (2026-07-31)
 =========================
 - Fix the toolbar icon not reacting to Cipher until the icon was clicked. The

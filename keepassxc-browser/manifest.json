@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
     "name": "Cipher Bridge",
-    "version": "0.9.2",
+    "version": "0.9.3",
     "description": "__MSG_extensionDescription__",
     "browser_specific_settings": {
         "gecko": {

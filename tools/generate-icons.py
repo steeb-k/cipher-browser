@@ -167,9 +167,31 @@ def main() -> int:
     for name, colour in PALETTES.items():
         themes[name] = variants(colour, GREY)
 
-    # Monochrome is single-colour by definition, so locked and open match.
+    # Monochrome gets the same grey locked state as every other theme. It used
+    # to reuse its own colour for both, on the reasoning that a single-colour
+    # theme has nothing to switch to -- but that makes the locked icon identical
+    # to the unlocked one, so a user on Monochrome had no way to tell a locked
+    # safe from an open one. The grey is a mid tone by design, which is what
+    # lets it read against a white icon on a dark toolbar and against a
+    # near-black one on a light toolbar.
     for name, colour in MONO.items():
-        themes[name] = variants(colour, colour)
+        themes[name] = variants(colour, GREY)
+
+    # A state the user cannot see is the same as one that never changes, and
+    # that is not visible in the output -- the files are all present and all
+    # well-formed, so the only symptom is a toolbar icon that appears to ignore
+    # the safe. Monochrome shipped like that. Refuse to write a set where two
+    # states a user is meant to tell apart are byte-identical.
+    for theme, icons in themes.items():
+        for a, b in (("icon_normal", "icon_locked"),
+                     ("icon_new_normal", "icon_new_locked")):
+            if icons[a] == icons[b]:
+                print(
+                    f"{theme}: {a} and {b} are identical, so a locked safe "
+                    f"would look exactly like an open one",
+                    file=sys.stderr,
+                )
+                return 1
 
     for theme, icons in themes.items():
         directory = TOOLBAR / theme
