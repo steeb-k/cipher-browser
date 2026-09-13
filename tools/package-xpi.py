@@ -41,10 +41,21 @@ def iter_files(base: Path):
     for path in sorted(base.rglob("*")):
         if path.is_dir():
             continue
-        if any(part in EXCLUDE_DIRS for part in path.relative_to(base).parts):
+
+        parts = path.relative_to(base).parts
+        if any(part in EXCLUDE_DIRS for part in parts):
             continue
         if path.suffix in EXCLUDE_SUFFIXES:
             continue
+
+        # Dotfiles, as web-ext excludes them. Signing leaves .amo-upload-uuid in
+        # the source directory, and shipping it puts an AMO upload identifier
+        # inside the add-on every user installs. Nothing the extension loads at
+        # runtime is a dotfile, so excluding the lot is safe and stays safe as
+        # more tooling drops its state here.
+        if any(part.startswith(".") for part in parts):
+            continue
+
         yield path
 
 
