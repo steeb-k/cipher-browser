@@ -11,6 +11,8 @@ KeePassXC-Browser install running side by side in the same browser:
   * the keyboard shortcuts must differ because a browser silently drops a
     duplicate suggested_key, which would break shortcuts in whichever
     extension happened to load second.
+  * the author and homepage are shown in about:addons and are where a user
+    goes to report a problem, so they must name this fork, not upstream.
 
 Re-runnable: applies cleanly to a freshly pulled upstream manifest.
 """
@@ -25,6 +27,8 @@ ROOT = Path(__file__).resolve().parent.parent
 
 NAME = "Cipher Bridge"
 EXTENSION_ID = "cipher-bridge@steeb-k.github.io"
+AUTHOR = "steeb-k"
+HOMEPAGE_URL = "https://github.com/steeb-k/cipher-browser"
 
 MANIFESTS = [
     ROOT / "keepassxc-browser" / "manifest.json",
@@ -48,6 +52,14 @@ def rebrand(path: Path) -> list[str]:
     if data.get("name") != NAME:
         data["name"] = NAME
         changes.append("name")
+
+    # Shown in about:addons and the store listing, so they must not say
+    # KeePassXC Team and point at keepassxreboot: those are upstream's, and
+    # this is where users would go to report a problem.
+    for key, value in (("author", AUTHOR), ("homepage_url", HOMEPAGE_URL)):
+        if data.get(key) != value:
+            data[key] = value
+            changes.append(key)
 
     # Firefox reads the ID from either key depending on manifest version.
     for key in ("applications", "browser_specific_settings"):

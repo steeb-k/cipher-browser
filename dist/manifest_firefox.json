@@ -8,7 +8,7 @@
             "id": "cipher-bridge@steeb-k.github.io"
         }
     },
-    "author": "KeePassXC Team",
+    "author": "steeb-k",
     "icons": {
         "16": "icons/keepassxc.svg",
         "32": "icons/keepassxc.svg",
@@ -203,5 +203,6 @@
     "storage": {
         "managed_schema": "managed_storage.json"
     },
-    "default_locale": "en"
+    "default_locale": "en",
+    "homepage_url": "https://github.com/steeb-k/cipher-browser"
 }

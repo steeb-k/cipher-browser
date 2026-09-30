@@ -21,6 +21,10 @@ Unreleased
   pushed to pages already open, so the icons follow without a reload
 - Keep the application artwork under tools/artwork so the icon generator draws
   from the same source the application does
+- Point the extension's author, homepage, bug tracker and documentation links
+  at Cipher Bridge's own repository, and drop KeePassXC's store listings,
+  funding and supporter credits. KeePassXC-Browser's contributors stay
+  credited in the About page as the project this is based on
 
 0.9.3 (2026-07-31)
 =========================

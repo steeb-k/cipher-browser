@@ -1,25 +1,53 @@
-# KeePassXC-Browser
+# Cipher Bridge
 
-Browser extension for [KeePassXC](https://keepassxc.org/) with [native messaging](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Native_messaging).
+Browser extension for [Cipher](https://github.com/steeb-k/cipher), a fork of
+[KeePassXC-Browser](https://github.com/keepassxreboot/keepassxc-browser) that
+talks to Cipher instead of KeePassXC over the same
+[native messaging](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Native_messaging)
+protocol.
 
-## Download and use
+## Installing
 
-This browser extension was first supported in KeePassXC 2.3.0 (release end of 2017). In general it is advised to only use the latest available release.
+Cipher Bridge is not yet on addons.mozilla.org or the Chrome Web Store.
+Build the extension package from this checkout:
 
-Get the extension for [Firefox](https://addons.mozilla.org/en-US/firefox/addon/keepassxc-browser/) or [Chrome/Chromium](https://chromewebstore.google.com/detail/keepassxc-browser/oboonakemofpalcgghocfoadofidjkkk) or [Microsoft Edge](https://microsoftedge.microsoft.com/addons/detail/pdffhmdngciaglkoonimfcmckehcpafo).
+```
+tools/package-xpi.py            # -> dist/cipher-bridge-<version>.xpi
+```
 
-Please see this [document](https://keepassxc.org/docs/KeePassXC_GettingStarted.html#_browser_integration) for instructions how to configure KeePassXC in order to connect the database correctly.
+Firefox ESR, Developer Edition and Nightly install an unsigned XPI once
+`xpinstall.signatures.required` is set to `false` in `about:config`; release
+Firefox refuses unsigned add-ons, and needs a build signed through
+`tools/sign-xpi.sh`. Then open `about:addons`, choose *Install Add-on From
+File* from the gear menu, and pick the XPI. For a single session,
+`about:debugging` → *Load Temporary Add-on* works on any Firefox.
+
+Chromium loads `keepassxc-browser/` unpacked from `chrome://extensions` with
+developer mode on, after `tools/stage-manifest.py chromium`.
+
+### Connecting to Cipher
+
+The browser launches a small proxy that relays messages to Cipher's socket.
+Cipher's repository ships it together with an installer for the native
+messaging host manifest the browser needs:
+
+```
+tools/install-native-host.py --install            # Firefox
+tools/install-native-host.py --browser chromium   # see the note it prints
+```
+
+Turn browser integration on in Cipher, then press *Connect* in the
+extension's toolbar popup and name the association when Cipher asks.
 
 ## How it works
 
-KeePassXC-Browser communicates with KeePassXC through _keepassxc-proxy_. The proxy handles listening to STDIN/STDOUT
-and transfers these messages through Unix domain sockets / named pipes to KeePassXC. This means KeePassXC can be used and started normally without interference from
-Native Messaging API. KeePassXC-Browser starts only the proxy application and there's no risk of shutting down KeePassXC or losing any unsaved changes. You don't need to install keepassxc-proxy separately. It is included in the KeePassXC application package. Alternatively you can use
-[keepassxc-proxy-rust](https://github.com/varjolintu/keepassxc-proxy-rust) as a proxy if you prefer a non-Qt solution.
+Cipher Bridge communicates with Cipher through `cipher-proxy`, which listens
+on STDIN/STDOUT and forwards the messages over a Unix domain socket to the
+running application. Cipher can be started and used normally; the extension
+starts only the proxy, so there is no risk of shutting Cipher down or losing
+unsaved changes.
 
 ## Requested permissions
-
-KeePassXC-Browser extension requests the following permissions:
 
 | Name  | Reason |
 | ----- | ----- |
@@ -27,7 +55,7 @@ KeePassXC-Browser extension requests the following permissions:
 | `contextMenus`            | To show context menu items |
 | `cookies`                 | To access browser's internal Public Suffix List |
 | `clipboardWrite`          | Allows password to be copied from password generator to clipboard |
-| `nativeMessaging`         | Allows communication with KeePassXC application |
+| `nativeMessaging`         | Allows communication with the Cipher application |
 | `notifications`           | To show browser notifications |
 | `offscreen`               | For accessing system theme when setting icon colors (Chrome only) |
 | `privacy`                 | For setting the extension as default password manager |
@@ -37,26 +65,34 @@ KeePassXC-Browser extension requests the following permissions:
 | `webRequest`              | For handling HTTP Basic Auth |
 | `webRequestAuthProvider`  | For handling HTTP Basic Auth for Chromium based browsers |
 | `webRequestBlocking`      | For handling HTTP Basic Auth |
-| `http://*/*`              | To allow using KeePassXC-Browser on all websites |
-| `https://*/*`             | To allow using KeePassXC-Browser on all websites |
-| `https://api.github.com/` | For checking the latest KeePassXC version from GitHub |
+| `http://*/*`              | To allow using Cipher Bridge on all websites |
+| `https://*/*`             | To allow using Cipher Bridge on all websites |
+| `https://api.github.com/` | Inherited from upstream's version check; unused by Cipher Bridge |
 
 ## Protocol
 
-Check [keepassxc-protocol](keepassxc-protocol.md) for the details about the messaging protocol used between the browser extension and KeePassXC.
+Check [keepassxc-protocol](keepassxc-protocol.md) for the details of the
+messaging protocol, which Cipher implements as KeePassXC does. Cipher adds
+one unsolicited signal, `icon-color`, so the toolbar icon can follow the
+colour chosen in the application.
 
-## Translations
+## Development
 
-Translations are managed on [Transifex](https://explore.transifex.com/keepassxc/keepassxc-browser/) which offers a web interface. Please join an existing language team or request a new one if there is none.
+`tools/stage-manifest.py firefox` swaps in the Firefox manifest for loading
+the tree unpacked; `--restore` puts the working one back. `npm run lint`
+runs ESLint. `tools/generate-icons.py` regenerates every icon from the
+artwork under `tools/artwork` and needs `rsvg-convert`.
 
 ## Contributing
 
-You may directly contribute your own code by submitting a pull request. Please read the [CONTRIBUTING](.github/CONTRIBUTING.md) document for further information.
+Bug reports and feature requests go to the
+[issue tracker](https://github.com/steeb-k/cipher-browser/issues). See
+[CONTRIBUTING](.github/CONTRIBUTING.md) for how pull requests and
+translations are handled.
 
-## Development and testing
+## Origins
 
-See [wiki](https://github.com/keepassxreboot/keepassxc-browser/wiki/Loading-the-extension-manually).
-
-## Help!
-
-See our [Troubleshooting Guide](https://github.com/keepassxreboot/keepassxc-browser/wiki/Troubleshooting-guide) for solving problems if previously listed issues and solutions are not working.
+Cipher Bridge is a fork of
+[KeePassXC-Browser](https://github.com/keepassxreboot/keepassxc-browser) by
+the KeePassXC Team, and keeps its history and its contributors' credits.
+Licensed under the GPL-3.0; see [LICENSE](LICENSE).
