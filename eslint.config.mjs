@@ -51,6 +51,7 @@ export default defineConfig([globalIgnores(["**/*.min.js"]), {
             DEFINED_CUSTOM_FIELDS: "readonly",
             elementsOverlap: "readonly",
             EXTENSION_NAME: "readonly",
+            ICON_COLORS: "readonly",
             getCurrentTab: "readonly",
             getIconClass: "readonly",
             getLoginData: "readonly",
