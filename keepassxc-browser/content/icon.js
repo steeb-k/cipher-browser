@@ -29,6 +29,10 @@ class Icon {
     // Creates a wrapper div that has the icon in Shadow DOM
     createWrapper(styleSheetFilename) {
         const styleSheet = createStylesheet(styleSheetFilename);
+        // Cipher: the icon's colour follows the application's choice. The
+        // override has to sit inside this shadow root to reach the icon; see
+        // css/cipher-icons.css and content/cipher-icons.js.
+        const cipherStyleSheet = createStylesheet('css/cipher-icons.css');
         const wrapper = document.createElement('div');
         wrapper.style.all = 'unset';
         wrapper.style.display = 'none';
@@ -38,11 +42,23 @@ class Icon {
         wrapper.style.top = Pixels(0);
         wrapper.style.left = Pixels(0);
 
-        // Waits for stylesheet to load before displaying the element
-        styleSheet.addEventListener('load', () => wrapper.style.display = 'block');
+        // Waits for both stylesheets to load before displaying the element,
+        // so the icon never flashes the fallback colour. A failed load counts
+        // too: an icon in the wrong colour beats no icon at all.
+        let pending = 2;
+        const reveal = () => {
+            if (--pending === 0) {
+                wrapper.style.display = 'block';
+            }
+        };
+        for (const sheet of [ styleSheet, cipherStyleSheet ]) {
+            sheet.addEventListener('load', reveal);
+            sheet.addEventListener('error', reveal);
+        }
 
         this.shadowRoot = wrapper.attachShadow({ mode: 'closed' });
         this.shadowRoot.append(styleSheet);
+        this.shadowRoot.append(cipherStyleSheet);
         this.shadowRoot.append(this.icon);
         document.body.append(wrapper);
         kpxcUI.observeWrapper(wrapper);

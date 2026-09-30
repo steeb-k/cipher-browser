@@ -6,6 +6,22 @@ than the upstream releases they descend from. Upstream's own history is kept
 under the heading further down, unchanged.
 
 
+Unreleased
+=========================
+- Draw the toolbar icon as the cipher wheel, the same drawing the application's
+  tray icon uses, painted in the colour chosen in Cipher and grey when the safe
+  is locked. The previous keyhole was modelled on an application icon that has
+  since been redrawn, so the two had stopped matching
+- Use the application icon itself as the extension's icon in about:addons and
+  the add-on listing
+- Colour the in-field icons -- username, TOTP and password generator -- to
+  match the colour chosen in Cipher. The username keyhole was fixed in the
+  brand pink whatever was chosen, and the TOTP and generator icons were still
+  the KeePassXC green drawings, never recoloured at all. A colour change is
+  pushed to pages already open, so the icons follow without a reload
+- Keep the application artwork under tools/artwork so the icon generator draws
+  from the same source the application does
+
 0.9.3 (2026-07-31)
 =========================
 - Give the Monochrome toolbar icon a visible locked state. It was generated with

@@ -1,0 +1,32 @@
+/*
+ * In-field icons in the colour chosen in Cipher.
+ *
+ * Loaded into each icon's shadow root after the upstream stylesheet
+ * (username.css, totp.css, pwgen.css), so these rules win on order. The
+ * image comes from a custom property that content/cipher-icons.js sets on
+ * the document root; custom properties inherit across the shadow boundary,
+ * which is what lets one script colour icons it cannot otherwise reach.
+ *
+ * Each fallback is the brand pink set, for the moment before the script has
+ * run and for a page that manages to strip the property. Relative URLs, so
+ * this works without the __MSG_@@extension_id__ placeholder upstream needs
+ * for its per-browser rules.
+ */
+
+.kpxc-username-icon.unlock,
+.kpxc-username-icon.unlock-moz,
+.kpxc-username-icon.unlock-safari {
+    background-image: var(--cipher-icon-unlock, url('../icons/field/colored/unlock.svg'));
+}
+
+.kpxc-totp-icon,
+.kpxc-totp-icon-moz,
+.kpxc-totp-icon-safari {
+    background-image: var(--cipher-icon-totp, url('../icons/field/colored/totp.svg'));
+}
+
+.kpxc-pwgen-icon.key,
+.kpxc-pwgen-icon.key-moz,
+.kpxc-pwgen-icon.key-safari {
+    background-image: var(--cipher-icon-key, url('../icons/field/colored/key.svg'));
+}

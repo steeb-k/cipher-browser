@@ -993,6 +993,17 @@ keepass.setIconColor = async function(color) {
     page.settings.iconColor = color;
     await browser.storage.local.set({ 'settings': page.settings });
     keepass.updatePopup();
+
+    // Pages already open loaded their settings before the change, so their
+    // in-field icons are told directly (content/cipher-icons.js). Tabs without
+    // a content script -- about: pages, the store, anything not http -- reject
+    // the message, and that is not worth reporting.
+    const openTabs = await browser.tabs.query({}).catch(() => []);
+    for (const tab of openTabs) {
+        if (tab?.id !== undefined) {
+            browser.tabs.sendMessage(tab.id, { action: 'cipher_icon_color', color: color }).catch(() => {});
+        }
+    }
 };
 
 // tabList is a Map, so it has a size and not a length. Reading .length gave

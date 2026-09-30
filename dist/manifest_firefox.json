@@ -79,7 +79,8 @@
                 "content/pwgen.js",
                 "content/totp-autocomplete.js",
                 "content/totp-field.js",
-                "content/username-field.js"
+                "content/username-field.js",
+                "content/cipher-icons.js"
             ],
             "run_at": "document_idle",
             "all_frames": true
@@ -170,7 +171,9 @@
         "css/pwgen.css",
         "css/username.css",
         "css/totp.css",
-        "content/passkeys.js"
+        "content/passkeys.js",
+        "css/cipher-icons.css",
+        "icons/field/*"
     ],
     "permissions": [
         "activeTab",
