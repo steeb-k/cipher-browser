@@ -14,7 +14,6 @@ These are just guidelines, not rules. Use your best judgment, and feel free to p
   * [Bug reports](#bug-reports)
   * [Discuss with the team](#discuss-with-the-team)
   * [Your first code contribution](#your-first-code-contribution)
-  * [Using AI](#using-ai)
   * [Pull requests](#pull-requests)
   * [Translations](#translations)
 
@@ -63,10 +62,6 @@ Unsure where to begin contributing to KeePassXC? You can start by looking throug
 * ['Help wanted' issues][help-wanted] – issues which should be a bit more involved than `beginner` issues.
 
 Both issue lists are sorted by total number of comments. While not perfect, looking at the number of comments on an issue can give a general idea of how much an impact a given change will have.
-
-### Using AI
-
-Submissions written using generative AI (even partially) are not accepted.
 
 ### Pull requests
 

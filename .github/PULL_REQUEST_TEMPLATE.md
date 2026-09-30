@@ -14,7 +14,6 @@
 
 ## Additional information, resources etc.
 [NOTE]: # ( Use if available. )
-[NOTE]: # ( If you used any AI, please disclose it here. )
 
 ## Type of change
 [NOTE]: # ( Please remove all lines which don't apply. )
