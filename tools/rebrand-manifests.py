@@ -28,6 +28,16 @@ ROOT = Path(__file__).resolve().parent.parent
 NAME = "Cipher Bridge"
 EXTENSION_ID = "cipher-bridge@steeb-k.github.io"
 AUTHOR = "steeb-k"
+
+# What the extension collects, as addons.mozilla.org asks every new submission
+# to declare: nothing.
+DATA_COLLECTION = {"required": ["none"]}
+
+# The oldest Firefox the package claims to support. 140 is the first release
+# that understands data_collection_permissions, and the current ESR base, so
+# anything older would be told it collects data it cannot read the declaration
+# for. Upstream's own minimum is 115.
+STRICT_MIN_VERSION = "140.0"
 HOMEPAGE_URL = "https://github.com/steeb-k/cipher-browser"
 
 MANIFESTS = [
@@ -61,12 +71,27 @@ def rebrand(path: Path) -> list[str]:
             data[key] = value
             changes.append(key)
 
-    # Firefox reads the ID from either key depending on manifest version.
-    for key in ("applications", "browser_specific_settings"):
-        gecko = data.get(key, {}).get("gecko")
-        if gecko is not None and gecko.get("id") != EXTENSION_ID:
+    # Firefox settings live under browser_specific_settings. Upstream also
+    # carries the older "applications" alias, which the linter flags as
+    # overridden and which has nothing of its own to say once its
+    # strict_min_version is carried over, so it is folded in and dropped.
+    legacy = data.pop("applications", {}).get("gecko", {})
+    if legacy:
+        changes.append("applications")
+    if legacy or "browser_specific_settings" in data:
+        gecko = data.setdefault("browser_specific_settings", {}).setdefault("gecko", {})
+        if gecko.get("id") != EXTENSION_ID:
             gecko["id"] = EXTENSION_ID
-            changes.append(f"{key}.gecko.id")
+            changes.append("browser_specific_settings.gecko.id")
+        if gecko.get("strict_min_version") != STRICT_MIN_VERSION:
+            gecko["strict_min_version"] = STRICT_MIN_VERSION
+            changes.append("browser_specific_settings.gecko.strict_min_version")
+        # Required of every extension submitted to addons.mozilla.org since
+        # November 2025. Nothing leaves the browser but the messages to the
+        # native host on this machine, so there is nothing to declare.
+        if gecko.get("data_collection_permissions") != DATA_COLLECTION:
+            gecko["data_collection_permissions"] = DATA_COLLECTION
+            changes.append("browser_specific_settings.gecko.data_collection_permissions")
 
     commands = data.get("commands", {})
     for command, (default, mac) in SHORTCUTS.items():

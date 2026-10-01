@@ -1,11 +1,17 @@
 {
     "manifest_version": 2,
     "name": "Cipher Bridge",
-    "version": "0.9.3",
+    "version": "0.9.4",
     "description": "__MSG_extensionDescription__",
     "browser_specific_settings": {
         "gecko": {
-            "id": "cipher-bridge@steeb-k.github.io"
+            "id": "cipher-bridge@steeb-k.github.io",
+            "strict_min_version": "140.0",
+            "data_collection_permissions": {
+                "required": [
+                    "none"
+                ]
+            }
         }
     },
     "author": "steeb-k",
@@ -194,12 +200,6 @@
     "optional_permissions": [
         "privacy"
     ],
-    "applications": {
-        "gecko": {
-            "id": "cipher-bridge@steeb-k.github.io",
-            "strict_min_version": "100.0"
-        }
-    },
     "storage": {
         "managed_schema": "managed_storage.json"
     },

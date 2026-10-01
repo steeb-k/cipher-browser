@@ -1,0 +1,23 @@
+{
+    "slug": "cipher-bridge",
+    "categories": {
+        "firefox": ["privacy-security"]
+    },
+    "summary": {
+        "en-US": "Fill and save logins from the Cipher password manager. Cipher Bridge talks to the Cipher desktop application running on this computer; nothing leaves the browser except those messages."
+    },
+    "description": {
+        "en-US": "Cipher Bridge connects Firefox to Cipher, a password manager for the KeePass format on the GNOME desktop. It fills usernames, passwords and one-time codes into login forms, offers to save new logins, and shows which entries match the current site.\n\nThe extension only ever talks to the Cipher application on the same machine, through the browser's native messaging. It contacts no server, collects nothing, and works offline.\n\nCipher Bridge is a fork of KeePassXC-Browser and speaks the same protocol. It installs alongside KeePassXC-Browser without conflict.\n\nRequires the Cipher application: https://github.com/steeb-k/cipher"
+    },
+    "homepage": {
+        "en-US": "https://github.com/steeb-k/cipher-browser"
+    },
+    "support_url": {
+        "en-US": "https://github.com/steeb-k/cipher-browser/issues"
+    },
+    "tags": ["password manager"],
+    "version": {
+        "license": "GPL-3.0-only",
+        "approval_notes": "Cipher Bridge is a fork of KeePassXC-Browser (https://github.com/keepassxreboot/keepassxc-browser) rebranded to work with the Cipher password manager (https://github.com/steeb-k/cipher). The source archive is the exact repository checkout the package was built from; the package is the keepassxc-browser/ directory with dist/manifest_firefox.json staged as manifest.json by tools/package-xpi.py, nothing is transpiled or bundled.\n\nMinified files are unmodified third-party libraries, identical to upstream KeePassXC-Browser: background/nacl.min.js and nacl-util.min.js (TweetNaCl), common/browser-polyfill.min.js (Mozilla's webextension-polyfill), bootstrap/bootstrap.min.js. The extension communicates only with a native messaging host (cipher-proxy, installed by the Cipher application) over stdio; it makes no network requests of its own, loads no remote code and collects no data."
+    }
+}

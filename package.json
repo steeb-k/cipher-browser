@@ -1,13 +1,14 @@
 {
   "name": "cipher-bridge",
-  "version": "0.9.3",
+  "version": "0.9.4",
   "description": "Cipher Bridge, a fork of KeePassXC-Browser that talks to Cipher",
   "main": "build.js",
   "devDependencies": {
     "@eslint/js": "^9.39.1",
     "@playwright/test": "^1.60.0",
     "@types/node": "^20.14.10",
-    "eslint": "^9.39.1"
+    "eslint": "^9.39.1",
+    "web-ext": "^10.7.0"
   },
   "dependencies": {
     "@npmcli/fs": "^2.1.0"

@@ -71,7 +71,7 @@ def main() -> int:
 
     manifest = json.loads(FIREFOX_MANIFEST.read_text())
     version = manifest.get("version", "0")
-    gecko = manifest.get("applications", {}).get("gecko", {})
+    gecko = manifest.get("browser_specific_settings", {}).get("gecko", {})
 
     out = args.out or (ROOT / "dist" / f"cipher-bridge-{version}.xpi")
     out.parent.mkdir(parents=True, exist_ok=True)

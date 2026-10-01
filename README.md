@@ -8,8 +8,13 @@ protocol.
 
 ## Installing
 
-Cipher Bridge is not yet on addons.mozilla.org or the Chrome Web Store.
-Build the extension package from this checkout:
+Cipher Bridge is submitted to [addons.mozilla.org](https://addons.mozilla.org/firefox/addon/cipher-bridge/)
+as a public listing. Once Mozilla's review is through, that is the way to
+install it on Firefox: it is signed, and Firefox updates it by itself. Each
+release is submitted with `tools/sign-xpi.sh listed`.
+
+Until then, or for a build of your own, package the extension from this
+checkout:
 
 ```
 tools/package-xpi.py            # -> dist/cipher-bridge-<version>.xpi

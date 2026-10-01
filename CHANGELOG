@@ -6,7 +6,7 @@ than the upstream releases they descend from. Upstream's own history is kept
 under the heading further down, unchanged.
 
 
-Unreleased
+0.9.4 (2026-09-30)
 =========================
 - Draw the toolbar icon as the cipher wheel, the same drawing the application's
   tray icon uses, painted in the colour chosen in Cipher and grey when the safe
@@ -25,6 +25,15 @@ Unreleased
   at Cipher Bridge's own repository, and drop KeePassXC's store listings,
   funding and supporter credits. KeePassXC-Browser's contributors stay
   credited in the About page as the project this is based on
+- Declare that the extension collects no data, as addons.mozilla.org requires
+  of every new submission, and fold the legacy "applications" manifest key into
+  browser_specific_settings, which the linter flagged as overriding it. The
+  minimum Firefox version rises to 140, the first that reads the declaration
+  and the current ESR base
+- Submit to addons.mozilla.org's public listing with tools/sign-xpi.sh listed,
+  which creates the listing from tools/amo-metadata.json on first use and
+  uploads the committed source alongside the package. web-ext comes from the
+  project's devDependencies, so npm ci is all the setup it needs
 
 0.9.3 (2026-07-31)
 =========================
